@@ -22,10 +22,14 @@ jobs:
           working-directory: ./src
           run: dotnet build Review-Filmes.sln
 
+  testes:
+    name: Etapa de Testes
+    needs: [build]
+    uses: Layzan/desafio-cicd-01/.github/workflows/testes.yml@main
 
   release:
       name: Criação de Release
-      needs: [build]
+      needs: [testes]
       runs-on: ubuntu-latest
       steps:
         - name: Obtendo o código do projeto
