@@ -43,3 +43,26 @@ jobs:
           env:
             ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=review-filmes;Username=review;Password=Passw0rd2023!"
 
+  sonarqube:
+    name: Scan com Sonarqube
+    runs-on: [self-hosted]
+    steps:
+        - name: Obtendo o código do projeto
+          uses: actions/checkout@v4
+        - name: Setup JDK
+          uses: actions/setup-java@v4
+          with:
+            distribution: adopt
+            dotnet-version: "21"
+        - name: Setup dotnet
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: "8.0.300"
+        - name: Instalação do Sonarqube Scanner
+          run: dotnet tool install --global dotnet-sonarscanner
+        - name: Buld e Analise
+          working-directory: ./src
+          run: |
+            dotnet sonarscanner begin /k:"review-filmes" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621"
+            dotnet build
+            dotnet sonarscanner end /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621"
