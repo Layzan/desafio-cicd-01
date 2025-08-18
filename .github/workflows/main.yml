@@ -25,6 +25,7 @@ jobs:
 
   release:
       name: Criação de Release
+      needs: [build]
       runs-on: ubuntu-latest
       steps:
         - name: Obtendo o código do projeto
