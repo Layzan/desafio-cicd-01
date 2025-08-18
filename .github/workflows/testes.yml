@@ -60,11 +60,13 @@ jobs:
         #     dotnet-version: "8.0.300"
         - name: Adiciona dotnet no PATH
           run: echo "$HOME/.dotnet:$HOME/.dotnet/tools" >> $GITHUB_PATH
-        - name: Instalação do Sonarqube Scanner
-          run: dotnet tool install --global dotnet-sonarscanner
+        - name: Instalação do SonarScanner (local)
+          run: |
+            dotnet new tool-manifest
+            dotnet tool install dotnet-sonarscanner
         - name: Buld e Analise
           working-directory: ./src
           run: |
-            dotnet sonarscanner begin /k:"review-filmes" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621"
+            dotnet tool run dotnet-sonarscanner begin /k:"review-filmes" /d:sonar.host.url="http://localhost:9000" /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621"
             dotnet build
-            dotnet sonarscanner end /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621"
+            dotnet tool run dotnet-sonarscanner end /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621"
