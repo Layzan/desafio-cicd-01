@@ -54,10 +54,10 @@ jobs:
           with:
             distribution: adopt
             java-version: "21"
-        - name: Setup dotnet
-          uses: actions/setup-dotnet@v4
-          with:
-            dotnet-version: "8.0.300"
+        # - name: Setup dotnet
+        #   uses: actions/setup-dotnet@v4
+        #   with:
+        #     dotnet-version: "8.0.300"
         - name: Adiciona dotnet no PATH
           run: echo "$HOME/.dotnet:$HOME/.dotnet/tools" >> $GITHUB_PATH
         - name: Instalação do Sonarqube Scanner
