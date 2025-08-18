@@ -27,9 +27,9 @@ jobs:
             ports:
                 - 5432:5432
             env:
-                POSTGRES_USER: review
-                POSTGRES_PASSWORD: Passw0rd2023!
-                POSTGRES_DB: review-filmes
+                POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+                POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+                POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
     steps:
         - name: Obtendo o código do projeto
           uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
           working-directory: ./src
           run: dotnet test ./Review-Filmes.Test.Integration/Review-Filmes.Test.Integration.csproj
           env:
-            ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=review-filmes;Username=review;Password=Passw0rd2023!"
+            ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=${{ secrets.POSTGRES_DB }};Username=${{ secrets.POSTGRES_USER }};Password=${{ secrets.POSTGRES_PASSWORD }}"
 
   sonarqube:
     name: Scan com Sonarqube
@@ -69,9 +69,21 @@ jobs:
           run: |
             dotnet tool run dotnet-sonarscanner begin /k:"review-filmes" \
             /d:sonar.host.url="http://localhost:9000" \
-            /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.javascript.enabled=false \
             /d:sonar.typescript.enabled=false
             dotnet build Review-Filmes.sln
-            dotnet tool run dotnet-sonarscanner end /d:sonar.token="sqp_9817e8753b7c73839bbd2a98899f09684b4f3621"
+            dotnet tool run dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        - name: Verificação do Quality Gate
+          uses: sonarsource/sonarqube-quality-gate-action@master
+          id: sonarqube-quality-gate-check
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_HOST_URL: http://localhost:9000
+          with:
+            scanMetadataReportFile: ./src.sonarqube/out/.sonar/report-task.txt
+        - name: Exibir status Quality Gate
+          if: ${{ always() }}
+          run: echo "O status do Quality Gate é ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+          
 
