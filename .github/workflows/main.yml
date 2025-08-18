@@ -23,7 +23,6 @@ jobs:
           run: dotnet build Review-Filmes.sln
 
   testes:
-    name: Etapa de Testes
     needs: [build]
     uses: Layzan/desafio-cicd-01/.github/workflows/testes.yml@main
 
