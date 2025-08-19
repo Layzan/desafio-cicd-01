@@ -63,4 +63,4 @@ jobs:
         - name: Upload do arquivo Trivy para o GitHub
           uses: github/codeql-action/upload-sarif@v3
           with:
-            sarif-file: 'trivy-docker-result.sarif'
+            sarif_file: 'trivy-docker-result.sarif'
