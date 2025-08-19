@@ -81,7 +81,7 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             SONAR_HOST_URL: http://localhost:9000
           with:
-            scanMetadataReportFile: ./src.sonarqube/out/.sonar/report-task.txt
+            scanMetadataReportFile: ./src/.sonarqube/out/.sonar/report-task.txt
         - name: Exibir status Quality Gate
           if: ${{ always() }}
           run: echo "O status do Quality Gate é ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
