@@ -84,7 +84,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: homologacao.fabricioveronez.com
+  - host: homologacao-reviewfilmes.45.55.97.122.nip.io/
     http:
       paths:
       - pathType: Prefix

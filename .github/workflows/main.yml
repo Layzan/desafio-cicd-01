@@ -69,3 +69,14 @@ jobs:
     needs: [release]
     uses: Layzan/desafio-cicd-01/.github/workflows/deploy.yml@main
     secrets: inherit
+    with:
+      environments-name: homologacao
+      environments-url: http://homologacao-reviewfilmes.45.55.97.122.nip.io/
+
+  deploy-producao:
+    needs: [deploy-homolog]
+    uses: Layzan/desafio-cicd-01/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      environments-name: producao
+      environments-url: http://producao-reviewfilmes.45.55.97.122.nip.io/
