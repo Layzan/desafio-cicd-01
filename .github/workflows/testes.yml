@@ -74,16 +74,16 @@ jobs:
             /d:sonar.typescript.enabled=false
             dotnet build Review-Filmes.sln
             dotnet tool run dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-        # - name: Verificação do Quality Gate
-        #   uses: sonarsource/sonarqube-quality-gate-action@master
-        #   id: sonarqube-quality-gate-check
-        #   env:
-        #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        #     SONAR_HOST_URL: http://localhost:9000
-        #   with:
-        #     scanMetadataReportFile: ./src/.sonarqube/out/.sonar/report-task.txt
-        # - name: Exibir status Quality Gate
-        #   if: ${{ always() }}
-        #   run: echo "O status do Quality Gate é ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+        - name: Verificação do Quality Gate
+          uses: sonarsource/sonarqube-quality-gate-action@master
+          id: sonarqube-quality-gate-check
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_HOST_URL: http://localhost:9000
+          with:
+            scanMetadataReportFile: ./src/.sonarqube/out/.sonar/report-task.txt
+        - name: Exibir status Quality Gate
+          if: ${{ always() }}
+          run: echo "O status do Quality Gate é ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
           
 
