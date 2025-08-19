@@ -64,7 +64,7 @@ jobs:
           run: |
             dotnet new tool-manifest
             dotnet tool install dotnet-sonarscanner
-        - name: Buld e Analise
+        - name: Build e Analise
           working-directory: ./src
           run: |
             dotnet tool run dotnet-sonarscanner begin /k:"review-filmes" \
