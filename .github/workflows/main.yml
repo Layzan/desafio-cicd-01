@@ -22,14 +22,14 @@ jobs:
           working-directory: ./src
           run: dotnet build Review-Filmes.sln
 
-  # testes:
-  #   needs: [build]
-  #   uses: Layzan/desafio-cicd-01/.github/workflows/testes.yml@main
-  #   secrets: inherit
+  testes:
+    needs: [build]
+    uses: Layzan/desafio-cicd-01/.github/workflows/testes.yml@main
+    secrets: inherit
 
   release:
       name: Criação de Release
-      needs: [build]
+      needs: [testes]
       runs-on: ubuntu-latest
       steps:
         - name: Obtendo o código do projeto
@@ -77,6 +77,8 @@ jobs:
     name: Teste End To End
     runs-on: ubuntu-latest
     needs: [deploy-homolog]
+    environment: 
+      name: homologacao
     container:
       image: fabricioveronez/webdriver-dotnet:chrome
       env:
